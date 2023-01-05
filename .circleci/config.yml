@@ -255,11 +255,15 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       # Let's install some dependecies first
+      #       yum -y install tar gzip
       - run:
-          name: Install dependencies
+          name: Install Dependencies
           command: |
-            # Let's install some dependecies first
-            yum -y install tar gzip
+            apk add --update ansible
       - run:
           name: Ensure back-end infrastructure exists
           command: |
