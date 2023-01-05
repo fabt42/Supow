@@ -301,6 +301,10 @@ jobs:
             # Let's install some dependecies first
             yum -y install tar gzip
       - run:
+          name: Install Dependencies
+          command: |
+            apk add --update ansible
+      - run:
           name: Configure server
           command: |
             cd .circleci/ansible
