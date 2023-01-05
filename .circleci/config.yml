@@ -280,10 +280,15 @@ jobs:
           event: pass
           template: success_tagged_deploy_1
       - run:
-          name: Add back-end ip to ansible inventory
+          name: Add back-end IP to ansible inventory
           command: |
             # Your code here
-            #exit 1
+            IPS=$(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIP' \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID}" \
+              --output text) 
+            echo "$IPS" >> .circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
