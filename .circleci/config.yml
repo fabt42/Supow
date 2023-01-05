@@ -133,9 +133,9 @@ jobs:
           name: Frontend Scan
           command:  |
             cd frontend
-            npm install node-fetch
-            npm install minimatch
-            npm install json5
+            npm install node-fetch --save-dev
+            npm install minimatch --save-dev
+            npm install json5 --save-dev
             npm install
             # npm install oauth-sign@^0.9.0
             npm audit fix --audit-level=critical --force
