@@ -256,15 +256,15 @@ jobs:
           command: |
             # Let's install some dependecies first
             yum -y install tar gzip
-      - run:
-          name: Ensure back-end infrastructure exists
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/backend.yml \
-              --tags project=your-tag \
-              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-              --tags project=udapeople
+      # - run:
+      #     name: Ensure back-end infrastructure exists
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file .circleci/files/backend.yml \
+      #         --tags project=your-tag \
+      #         --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+      #         --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+      #         --tags project=udapeople
       - run:
           name: Ensure front-end infrastructure exist
           command: |
