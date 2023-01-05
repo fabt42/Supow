@@ -76,8 +76,9 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
+      #Restore from cache >> Commented out as Circle Ci skipped certain jobs in workflows
+      # - restore_cache:
+          # keys: [frontend-build]
       - run:
           name: Build front-end
           command: |
@@ -101,8 +102,9 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
+      #Restore from cache >> Commented out as Circle Ci skipped certain jobs in workflows
+      # - restore_cache:
+          # keys: [backend-build]
       - run:
           name: Back-end build
           command: |
@@ -127,8 +129,8 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      # Restore from cache
-      - restore_cache:
+      #Restore from cache >> Commented out as Circle Ci skipped certain jobs in workflows
+      # - restore_cache:
           keys: [frontend-build]
       # Your job code here
       - run:
@@ -151,9 +153,9 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      # Restore from cache
-      - restore_cache:
-          keys: [backend-build]
+      #Restore from cache >> Commented out as Circle Ci skipped certain jobs in workflows
+      # - restore_cache:
+      #     keys: [backend-build]
       # Your job code here
       - run:
           name: back-end test
@@ -175,8 +177,9 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
+      #Restore from cache >> Commented out as Circle Ci skipped certain jobs in workflows
+      # - restore_cache:
+      #     keys: [frontend-build]
       # Your job code here
       - run:
           name: Install Deps
@@ -318,21 +321,28 @@ jobs:
             at: /root/project/
       #Here's where you will add some code to rollback on failure      
 
-  #run-migrations:
-    #docker:
-      # Docker image here that supports NodeJS
-    #steps:
-      # Checkout code from git
-      #- run:
-          #name: Run migrations
-          #command: |
-            # Your code here
-            #exit 1
-      #- run:
-          #name: Send migration results to memstash
-          #command: |
-            # Your code here
-            #exit 1
+  run-migrations:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Run migrations
+          command: |
+            cd backend
+            npm install
+            # Run and save the migration output
+            npm run migrations > migrations_dump.txt
+      - run:
+          name: Send migration results to memstash
+          command: |
+            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
+            then
+              # If you are using memstash.io, generate the token "7933fe63-4687-4fa1-8426-aa25aa1730ec" on the website
+              #curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
+              # If you are using kvdb.io, generate the bucket ID "9GE4jRtKznmVKRfvdBABBe" in your local terminal first
+              curl https://kvdb.io/V58eP5eezXXZpHNvR3iK3M/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+            fi
      # Here's where you will add some code to rollback on failure      
 
   #deploy-frontend:
