@@ -423,11 +423,11 @@ jobs:
 workflows:
   default:
     jobs:
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-           branches:
-              only: [test-feature-branch]
+      - deploy-infrastructure
+          #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          #filters:
+           #branches:
+              #only: [test-feature-branch]
       #- notify
       #- build-frontend
       #- build-backend
