@@ -124,6 +124,12 @@ jobs:
           keys: [frontend-build]
       # Your job code here
       - run:
+          name: Install Deps
+          command: |
+             # Your code here
+             cd frontend
+             npm install
+      - run:
           name: Frontend Scan
           command:  |
             cd frontend
