@@ -61,7 +61,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "*This is a text notification that notify was triggered. This notification should be visible in Slack*",
+                      "text": "*This is a text notification that notify was triggered. This notification should be visible in Slack as workflow ${CIRCLE_WORKFLOW_ID} started*",
                       "emoji": true
                     }
                   ]
