@@ -419,6 +419,8 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
+      - notify:
+          requires: [scan-backend, scan-frontend]
       #- deploy-infrastructure:
           #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           #filters:
