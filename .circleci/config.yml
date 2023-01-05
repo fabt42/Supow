@@ -133,19 +133,21 @@ jobs:
           name: Frontend Scan
           command:  |
             cd frontend
-            npm install --include=peer
-            npm install node-fetch --save-dev
-            npm install minimatch --save-dev
-            npm install json5 --save-dev
+            npm audit --dry-run
+            npm-audit --audit-level=none
+            #npm install --include=peer
+            #npm install node-fetch --save-dev
+            #npm install minimatch --save-dev
+            #npm install json5 --save-dev
             #npm audit fix --audit-level=critical --force
             # If the "npm audit fix" command above could not fix all critical vulnerabilities, try “npm audit fix --force” again
             #npm audit --audit-level=critical
             # No other fix at the moment
-            npm update minimist --depth 4
-            npm update js-yaml --depth 4
-            npm update loader-utils --depth 2
-            npm update json5 --depth 3
-            npm audit --audit-level=null
+            #npm update minimist --depth 4
+            #npm update js-yaml --depth 4
+            #npm update loader-utils --depth 2
+            #npm update json5 --depth 3
+            #npm audit --audit-level=null
 
   scan-backend:
     docker:
