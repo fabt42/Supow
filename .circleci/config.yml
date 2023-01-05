@@ -294,24 +294,29 @@ jobs:
           event: pass
           template: success_tagged_deploy_1      
 
-  #configure-infrastructure:
-    #docker:
-      # Docker image here that supports Ansible
-    #steps:
+  configure-infrastructure:
+    docker:
+      Docker image here that supports Ansible
+    steps:
       # Checkout code from git
-      # Add ssh keys with fingerprint
-      # attach workspace
-      #- run:
-          #name: Install dependencies
-          #command: |
-            # Your code here
-            #exit 1
-      #- run:
-          #name: Configure server
-          #command: |
-            # Your code here
-            #exit 1
-      # Here's where you will add some code to rollback on failure      
+      - checkout
+      #Fingerprints
+      - add_ssh_keys:
+            fingerprints: ["b0:dc:47:24:b2:13:0d:85:32:1f:f6:48:70:89:8c:60"]
+      #Attach workspace
+      - attach_workspace:
+            at: /root/project/
+      - run:
+          name: Install dependencies
+          command: |
+            # Let's install some dependecies first
+            yum -y install tar gzip
+      - run:
+          name: Configure server
+          command: |
+            Your code here
+            exit 1
+      #Here's where you will add some code to rollback on failure      
 
   #run-migrations:
     #docker:
