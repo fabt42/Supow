@@ -239,38 +239,61 @@ jobs:
           template: success_tagged_deploy_1
             
 
-  #deploy-infrastructure:
-    #docker:
-      # Docker image here that supports AWS CLI
-    #steps:
+  deploy-infrastructure:
+    docker:
+      - image: amazon/aws-cli:latest 
+    steps:
       # Checkout code from git
-      #- run:
-          #name: Ensure back-end infrastructure exists
-          #command: |
-            #aws cloudformation deploy \
-              #--template-file .circleci/files/backend.yml \
-              #--tags project=your-tag \
-              # --stack-name "your back-end stack name with workflow id" \
-              # --parameter-overrides ID="your workflow id"  
-              #exit 1
-      #- run:
-          #name: Ensure front-end infrastructure exist
-          #command: |
-            #aws cloudformation deploy \
-              #--template-file .circleci/files/frontend.yml \
-              #--tags project=your-tag \
-              # --stack-name "your front-end stack name with workflow id" \
-              # --parameter-overrides ID="your workflow id"  
-              #exit 1
-      #- run:
-          #name: Add back-end ip to ansible inventory
-          #command: |
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            # Let's install some dependecies first
+            yum -y install tar gzip
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --tags project=your-tag \
+              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+              --tags project=udapeople
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=your-tag \
+              --stack-name "your front-end stack name with workflow id" \
+              --parameter-overrides ID="your workflow id" 
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
             # Your code here
             #exit 1
-      #- persist_to_workspace:
-          #root: ~/
-          #paths:
-            #- project/.circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
       # Here's where you will add some code to rollback on failure      
 
   #configure-infrastructure:
@@ -419,11 +442,11 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
-      #- deploy-infrastructure:
-          #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          #filters:
-           #branches:
-              #only: [test-feature-branch]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+           branches:
+              only: [test-feature-branch]
       #- configure-infrastructure:
           #requires: [deploy-infrastructure]
       #- run-migrations:
