@@ -436,6 +436,11 @@ jobs:
 workflows:
   default:
     jobs:
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+           branches:
+              only: [test-feature-branch]
       - notify
       - build-frontend
       - build-backend
@@ -447,11 +452,7 @@ workflows:
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
-      - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
-           branches:
-              only: [test-feature-branch]
+
       #- configure-infrastructure:
           #requires: [deploy-infrastructure]
       #- run-migrations:
@@ -466,6 +467,5 @@ workflows:
           #requires: [smoke-test]
       #- cleanup:
           #requires: [cloudfront-update]
-      - notify
 
 # VS Code Extension Version: 1.5.1
