@@ -57,7 +57,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "*This is a text notification that notify was triggered*",
+                      "text": "*This is a text notification that notify was triggered. This notification should be visible in Slack*",
                       "emoji": true
                     }
                   ]
