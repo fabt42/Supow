@@ -83,6 +83,12 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
   build-backend:
     docker:
@@ -102,6 +108,12 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
   test-frontend:
     docker:
@@ -120,6 +132,12 @@ jobs:
              cd frontend
              npm install
              npm run test
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
   test-backend:
     docker:
@@ -138,6 +156,12 @@ jobs:
              cd backend
              npm install
              npm run test
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
             
   scan-frontend:
     docker:
@@ -158,8 +182,11 @@ jobs:
           name: Frontend Scan
           command:  |
             cd frontend
-            npm audit --dry-run
-            npm-audit --audit-level=none
+            npm install --include=peer
+            npm install oauth-sign@^0.9.0
+            npm audit fix --audit-level=none --force
+            #npm audit --dry-run
+            #npm-audit --audit-level=none
             #npm install --include=peer
             #npm install node-fetch --save-dev
             #npm install minimatch --save-dev
@@ -173,6 +200,12 @@ jobs:
             #npm update loader-utils --depth 2
             #npm update json5 --depth 3
             #npm audit --audit-level=null
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
   scan-backend:
     docker:
@@ -405,5 +438,6 @@ workflows:
           #requires: [smoke-test]
       #- cleanup:
           #requires: [cloudfront-update]
+      - notify
 
 # VS Code Extension Version: 1.5.1
