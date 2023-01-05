@@ -147,7 +147,10 @@ jobs:
             npm audit --audit-level=critical
             # No other fix at the moment
             npm audit --audit-level=null
-            
+            npm update minimist --depth 4
+            npm update js-yaml --depth 4
+            npm update loader-utils --depth 2
+            npm update json5 --depth 3
 
   scan-backend:
     docker:
