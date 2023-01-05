@@ -302,12 +302,18 @@ jobs:
       - add_ssh_keys:
             fingerprints: ["b0:dc:47:24:b2:13:0d:85:32:1f:f6:48:70:89:8c:60"]
       - run:
-          name: Install dependencies
+          name: Install dependencies with APK
+          command: |
+            apk update && \
+            apk add --update ansible \
+            && apk add gzip tar
+      - run:
+          name: Install dependencies with Yum
           command: |
             # Let's install some dependecies first
             yum -y install tar gzip
       - run:
-          name: Install dependencies
+          name: Install dependencies with Yum
           command: |             
             yum update -y
             yum install tar -y
