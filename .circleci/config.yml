@@ -10,6 +10,10 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.12.0
 
+commands:
+  print_pipeline_id:
+    steps:
+      - run: echo ${CIRCLE_WORKFLOW_ID}
 #commands:
   #destroy-environment:
     #description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -47,6 +51,7 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
+      - print_pipeline_id
       - slack/notify:
           custom: |
             {
