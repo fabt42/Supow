@@ -309,9 +309,9 @@ jobs:
             yum install curl -y
             yum install awscli -y
             yum install python ansible -y
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            . ~/.nvm/nvm.sh
-            nvm install node
+            # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            # . ~/.nvm/nvm.sh
+            # nvm install node
             # nvm install npm
             cd ..
       - run:
@@ -364,9 +364,9 @@ jobs:
               yum install curl -y
               yum install awscli -y
               yum install python ansible -y
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-              . ~/.nvm/nvm.sh
-              nvm install node
+              # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+              # . ~/.nvm/nvm.sh
+              # nvm install node
               # nvm install npm
               cd ..
         - run:
